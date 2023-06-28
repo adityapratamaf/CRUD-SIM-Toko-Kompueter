@@ -1,5 +1,25 @@
 <?php
 
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
+// membatasi halaman sesuai level user
+if ($_SESSION['level'] != 1) {
+    echo    "<script>
+                alert('Tidak Ada Akses');
+                document.location.href = 'dashboard.php';
+            </script>";
+    exit();
+}
+
 $title = "DATA TOKO";
 
 include 'layout/header.php';

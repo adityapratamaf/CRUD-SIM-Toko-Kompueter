@@ -1,8 +1,25 @@
 <?php
+
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 $title = "DASHBOARD";
 include 'layout/header.php';
 $data_akun = select("SELECT * FROM tb_akun");
+
+$nama_user = $_SESSION['nama_akun'];
+
 ?>
+
+
 
 <!-- ========== CARD ========== -->
 <div class="container">
@@ -19,7 +36,8 @@ $data_akun = select("SELECT * FROM tb_akun");
             <div class="row mb-3">
                 <div class="col">
                     <div class="alert alert-primary" role="alert">
-                        <b>SELAMAT DATANG</b>
+                        <!-- <b>SELAMAT DATANG <?= $_SESSION['nama_akun']; ?> </b> -->
+                        <b>SELAMAT DATANG <?= strtoupper($nama_user) ?> </b>
                     </div>
                 </div>
 

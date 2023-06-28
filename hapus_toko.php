@@ -1,5 +1,16 @@
 <?php
 
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 include 'config/app.php';
 
 // menerima id toko yang di pilih

@@ -11,12 +11,22 @@ if (!isset($_SESSION['login'])) {
     exit();
 }
 
-$title = "DATA PENJUALAN";
+// membatasi halaman sesuai level user
+if ($_SESSION['level'] != 1) {
+    echo    "<script>
+                alert('Tidak Ada Akses');
+                document.location.href = 'dashboard.php';
+            </script>";
+    exit();
+}
+
+$title = "DATA LAPORAN";
 
 include 'layout/header.php';
 
-$data_penjualan = select("SELECT * FROM tb_toko JOIN tb_penjualan ON tb_toko.id_toko = tb_penjualan.id_toko");
+$data_laporan = select("SELECT * FROM tb_laporan");
 ?>
+
 
 <!-- ========== CARD ========== -->
 <div class="container">
@@ -24,7 +34,7 @@ $data_penjualan = select("SELECT * FROM tb_toko JOIN tb_penjualan ON tb_toko.id_
         <div class="card-header">
             <ul class="nav nav-pills card-header-pills">
                 <li class="nav-item">
-                    <a class="nav-link active">PENJUALAN</a>
+                    <a class="nav-link active" href="index.php">LAPORAN</a>
                 </li>
             </ul>
         </div>
@@ -32,10 +42,10 @@ $data_penjualan = select("SELECT * FROM tb_toko JOIN tb_penjualan ON tb_toko.id_
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col">
-                    <h4><b>DATA PENJUALAN</b></h4>
+                    <h4><b>DATA LAPORAN</b></h4>
                 </div>
                 <div class="col">
-                    <a href="tambah_penjualan.php" class="btn btn-primary" style="float : right;"><i class="bi bi-plus-square"></i></i></a>
+                    <a href="tambah_laporan.php" class="btn btn-primary" style="float : right;"><i class="bi bi-plus-square"></i></i></a>
                 </div>
             </div>
 
@@ -43,23 +53,21 @@ $data_penjualan = select("SELECT * FROM tb_toko JOIN tb_penjualan ON tb_toko.id_
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Toko</th>
-                        <th>Jumlah</th>
-                        <th>Tanggal</th>
+                        <th>Nama Laporan</th>
+                        <th>Isi Laporan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $nomor = 1; ?>
-                    <?php foreach ($data_penjualan as $penjualan) : ?>
+                    <?php foreach ($data_laporan as $laporan) : ?>
                         <tr>
                             <td> <?= $nomor++; ?> </td>
-                            <td> <?= $penjualan['nama_toko']; ?> </td>
-                            <td> Rp. <?= number_format($penjualan['jumlah'], 0, ',', '.'); ?> </td>
-                            <td> <?= date('d-M-Y', strtotime($penjualan['tanggal'])); ?> </td>
+                            <td> <?= $laporan['nama_laporan']; ?> </td>
+                            <td> <?= $laporan['isi_laporan']; ?> </td>
                             <td>
-                                <a href="ubah_penjualan.php?id_penjualan=<?= $penjualan['id_penjualan']; ?>" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
-                                <a href="hapus_penjualan.php?id_penjualan=<?= $penjualan['id_penjualan']; ?>" class="btn btn-danger" onclick="return confirm('Hapus Data ?');"><i class="bi bi-trash3-fill"></i></a>
+                                <a href="ubah_laporan.php?id_laporan=<?= $laporan['id_laporan']; ?>" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+                                <a href="hapus_laporan.php?id_laporan=<?= $laporan['id_laporan']; ?>" class="btn btn-danger" onclick="return confirm('Hapus Data ?');"><i class="bi bi-trash3-fill"></i></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

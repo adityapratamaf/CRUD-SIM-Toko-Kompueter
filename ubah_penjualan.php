@@ -1,5 +1,16 @@
 <?php
 
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 $title = "UBAH PENJUALAN";
 
 include 'layout/header.php';
@@ -23,7 +34,7 @@ if (isset($_POST['ubah'])) {
 $id_penjualan = (int)$_GET['id_penjualan'];
 
 // tampilkan data sesuai id yang dipilih
-$data_penjualan = select("SELECT * FROM tb_penjualan WHERE id_penjualan=$id_penjualan")[0];
+$data_penjualan = select("SELECT * FROM tb_toko JOIN tb_penjualan ON tb_toko.id_toko = tb_penjualan.id_toko")[0];
 
 ?>
 
@@ -52,20 +63,19 @@ $data_penjualan = select("SELECT * FROM tb_penjualan WHERE id_penjualan=$id_penj
             <form action="" method="POST">
 
                 <input type="hidden" name="id_penjualan" id="id_penjualan" value="<?= $data_penjualan['id_penjualan']; ?>">
+
                 <div class="mb-3 mt-2">
                     <label for="id_toko" class="form-label">Toko</label>
                     <select class="form-select" id="id_toko" name="id_toko" required>
 
                         <?php $data_toko = select("SELECT * FROM tb_toko"); ?>
                         <?php foreach ($data_toko as $toko) : ?>
-                            <!-- <option value="<?= $toko['id_toko']; ?>"><?= $toko['nama_toko']; ?></option> -->
-
-                            <option value="<?= $toko['id_toko']; ?>" <?= $toko['id_toko'] == $toko['id_toko'] ? 'selected' : null ?>> <?= $toko['nama_toko']; ?></option>
-                            <!--               <option value="Aktif" <?= $data_toko == 'Aktif' ? 'selected' : null ?>>Aktif</option> -->
+                            <option value="<?= $toko['id_toko']; ?>"><?= $toko['nama_toko']; ?></option>
                         <?php endforeach; ?>
 
                     </select>
                 </div>
+
                 <div class="mb-3">
                     <label for="jumlah" class="form-label">Jumlah</label>
                     <input type="number" class="form-control" id="jumlah" name="jumlah" required value="<?= $data_penjualan['jumlah']; ?>">

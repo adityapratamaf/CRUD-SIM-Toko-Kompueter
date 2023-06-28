@@ -1,4 +1,16 @@
 <?php
+
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 $title = "UBAH DOKUMEN";
 include 'layout/header.php';
 
@@ -61,6 +73,18 @@ if (isset($_POST['ubah'])) {
                     <p><small>Gambar Sebelumnya</small></p>
                     <img src="assets/dokumen-toko/<?= $dokumen['surat_waralaba']; ?>" alt="Foto_Sebelumnya" width="200px">
                 </div>
+
+                <?php if ($_SESSION['level'] == 1) : ?>
+                    <div class="mb-3 mt-2">
+                        <label for="status_dokumen" class="form-label">Status</label>
+                        <select class="form-select" id="status_dokumen" name="status_dokumen" required>
+                            <option value="" selected>Menunggu</option>
+                            <?php $status = $dokumen['status_dokumen']; ?>
+                            <option value="Valid" <?= $status == 'Valid' ? 'selected' : null ?>>Valid</option>
+                            <option value="Tidak Valid" <?= $status == 'Tidak Valid' ? 'selected' : null ?>>Tidak Valid</option>
+                        </select>
+                    </div>
+                <?php endif; ?>
 
                 <button type="submit" name="ubah" class="btn btn-primary" style="float : right;"><i class="bi bi-plus-square"></i></button>
 

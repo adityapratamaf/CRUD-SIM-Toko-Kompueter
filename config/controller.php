@@ -226,6 +226,7 @@ function create_dokumen($POST)
 
     $nama_dokumen = $POST['nama_dokumen'];
     $surat_waralaba = upload_dokumen();
+    $status_dokumen = $POST['status_dokumen'];
 
     // cek upload file atau tidak
     if (!$surat_waralaba) {
@@ -233,7 +234,7 @@ function create_dokumen($POST)
     }
 
     // query tambah data 
-    $query = "INSERT INTO tb_dokumen VALUES(null, '$nama_dokumen', '$surat_waralaba')";
+    $query = "INSERT INTO tb_dokumen VALUES(null, '$nama_dokumen', '$surat_waralaba', '$status_dokumen')";
 
     mysqli_query($db, $query);
 
@@ -248,6 +249,7 @@ function update_dokumen($POST)
     $id_dokumen     = $POST['id_dokumen'];
     $nama_dokumen   = $POST['nama_dokumen'];
     $dokumenlama    = $POST['dokumenlama'];
+    $status_dokumen = $POST['status_dokumen'];
 
     // cek upload file yang baru atau tidak
     if ($_FILES['surat_waralaba']['error'] == 4) {
@@ -257,7 +259,7 @@ function update_dokumen($POST)
     }
 
     // query ubah data ke database
-    $query  = "UPDATE tb_dokumen SET nama_dokumen='$nama_dokumen', surat_waralaba='$surat_waralaba' WHERE id_dokumen=$id_dokumen";
+    $query  = "UPDATE tb_dokumen SET nama_dokumen='$nama_dokumen', surat_waralaba='$surat_waralaba', status_dokumen='$status_dokumen' WHERE id_dokumen=$id_dokumen";
     mysqli_query($db, $query);
 
     return mysqli_affected_rows($db);
@@ -372,6 +374,51 @@ function update_akun($POST)
 
     // query ubah data ke database
     $query  = "UPDATE tb_akun SET nama_akun='$nama_akun', username='$username', password='$password', level='$level' WHERE id_akun=$id_akun";
+    mysqli_query($db, $query);
+
+    return mysqli_affected_rows($db);
+}
+
+// ============================================================ LAPORAN ============================================================
+
+// fungsi menambahkan data laporan 
+function create_laporan($POST)
+{
+    global $db;
+
+    $nama_laporan = $POST['nama_laporan'];
+    $isi_laporan = implode(",", $POST['isi_laporan']);
+
+    // query tambah data ke database
+    $query = "INSERT INTO tb_laporan VALUES(null, '$nama_laporan', '$isi_laporan')";
+    mysqli_query($db, $query);
+
+    return mysqli_affected_rows($db);
+}
+
+// fungsi menghapus data laporan 
+function delete_laporan($id_laporan)
+{
+    global $db;
+
+    // query menghapus data di database
+    $query = "DELETE FROM tb_laporan WHERE id_laporan=$id_laporan";
+    mysqli_query($db, $query);
+
+    return mysqli_affected_rows($db);
+}
+
+// fungsi mengubah data laporan
+function update_laporan($POST)
+{
+    global $db;
+
+    $id_laporan = $POST['id_laporan'];
+    $nama_laporan = $POST['nama_laporan'];
+    $isi_laporan = implode(",", $POST['isi_laporan']);
+
+    // query update data ke database
+    $query = "UPDATE tb_laporan SET nama_laporan='$nama_laporan', isi_laporan='$isi_laporan' WHERE id_laporan=$id_laporan";
     mysqli_query($db, $query);
 
     return mysqli_affected_rows($db);

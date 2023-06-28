@@ -1,5 +1,16 @@
 <?php
 
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 $title = "UBAH TOKO";
 
 include 'layout/header.php';
@@ -69,9 +80,9 @@ $data_toko = select("SELECT * FROM tb_toko WHERE id_toko = $id_toko")[0];
                 <div class="mb-3 mt-2">
                     <label for="status_toko" class="form-label">Status Toko</label>
                     <select class="form-select" id="status_toko" name="status_toko" required>
-                        <?php $data_toko['status_toko']; ?>
-                        <option value="Aktif" <?= $data_toko == 'Aktif' ? 'selected' : null ?>>Aktif</option>
-                        <option value="Non Aktif" <?= $data_toko == 'Non Aktif' ? 'selected' : null ?>>Non Aktif</option>
+                        <?php $status = $data_toko['status_toko']; ?>
+                        <option value="Aktif" <?= $status == 'Aktif' ? 'selected' : null ?>>Aktif</option>
+                        <option value="Non Aktif" <?= $status == 'Non Aktif' ? 'selected' : null ?>>Non Aktif</option>
                     </select>
                 </div>
                 <div class="mb-3 mt-2">

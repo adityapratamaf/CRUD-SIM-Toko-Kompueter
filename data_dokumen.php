@@ -1,4 +1,16 @@
 <?php
+
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 $title = "DATA DOKUMEN";
 include 'layout/header.php';
 
@@ -32,6 +44,7 @@ $data_dokumen = select("SELECT * FROM tb_dokumen");
                         <th>No</th>
                         <th>Nama</th>
                         <th>Dokumen</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -44,6 +57,9 @@ $data_dokumen = select("SELECT * FROM tb_dokumen");
                             <td>
                                 <a href="assets/dokumen-toko/<?= $dokumen['surat_waralaba']; ?>" target="blank">
                                     <img src="assets/dokumen-toko/<?= $dokumen['surat_waralaba']; ?>" alt="dokumen" width="190px" height="250px">
+                            </td>
+                            <td>
+                                <button class="btn btn-warning btn-sm"> <?= $dokumen['status_dokumen']; ?> </button>
                             </td>
                             <td>
                                 <a href="ubah_dokumen.php?id_dokumen=<?= $dokumen['id_dokumen']; ?>" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>

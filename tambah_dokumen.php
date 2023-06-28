@@ -1,4 +1,16 @@
 <?php
+
+session_start();
+
+// membatasi halaman sebelum login
+if (!isset($_SESSION['login'])) {
+    echo    "<script>
+                alert('Login');
+                document.location.href = 'login.php';
+            </script>";
+    exit();
+}
+
 $title = "TAMBAH DOKUMEN";
 
 include 'layout/header.php';
@@ -50,6 +62,9 @@ if (isset($_POST['tambah'])) {
                     <label for="surat_waralaba" class="form-label">Dokumen</label>
                     <input type="file" class="form-control" id="surat_waralaba" name="surat_waralaba">
                 </div>
+
+                <input type="hidden" class="form-control" id="status_dokumen" name="status_dokumen" value="Menunggu">
+
                 <button type="submit" name="tambah" class="btn btn-primary" style="float : right;"><i class="bi bi-plus-square"></i></button>
 
             </form>

@@ -13,17 +13,17 @@ if (!isset($_SESSION['login'])) {
 
 include 'config/app.php';
 
-// menerima id dari data yang dipilih
-$id_dokumen = (int)$_GET['id_dokumen'];
+// menerima id barang yang di pilih
+$id_laporan = (int)$_GET['id_laporan'];
 
-if (delete_dokumen($id_dokumen) > 0) {
+if (delete_laporan($id_laporan) > 0) {
     echo    "<script>
-            alert('Data Telah Dihapus');
-            document.location.href = 'data_dokumen.php';
+                alert('Data Telah Dihapus');
+                document.location.href = 'data_laporan.php';
             </script>";
 } else {
     echo    "<script>
-            alert ('Data Gagal Dihapus');
-            document.location.href = 'data_dokumen.php';
+                alert('Data Gagal Dihapus');
+                document.location.href = 'data_laporan.php';
             </script>";
 }
